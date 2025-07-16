@@ -1,0 +1,275 @@
+/* Custom CSS for Brain Tumor Detection Web App */
+
+/* Fix for Font Awesome icons */
+.fa, .fas, .far, .fal, .fab {
+    font-family: "Font Awesome 5 Free" !important;
+}
+.fas {
+    font-weight: 900 !important;
+}
+
+/* Full width container styles */
+.container, 
+.container-fluid {
+    max-width: 100% !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    width: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .container, 
+    .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+/* Full-width section adjustments */
+.hero-section,
+.tech-section,
+.upload-section,
+.result-section,
+.timeline-section,
+.stats-section {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0 !important;
+}
+
+/* Improved upload container */
+.upload-container {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed var(--upload-border);
+    border-radius: 0.75rem;
+    background-color: var(--upload-bg);
+    margin-bottom: 1.5rem;
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.upload-container:hover {
+    border-color: var(--primary-color);
+    background-color: var(--primary-lighter);
+}
+
+.upload-container.bg-light {
+    background-color: var(--primary-lightest) !important;
+    border-color: var(--primary-color);
+}
+
+/* File name display */
+#file-name {
+    margin-top: 1rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+/* Drop area styling */
+#drop-area {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+/* Result sections */
+.result-section {
+    background-color: var(--primary-lightest);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+.result-image {
+    border-radius: 0.5rem;
+    max-width: 100%;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+/* Loading indicator */
+.loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25rem solid var(--primary-lighter);
+    border-right-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spinner-border 0.75s linear infinite;
+    transition: var(--transition);
+}
+
+/* Dashboard specific styles */
+.dashboard-metric {
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    background-color: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+/* Card styles for consistent full-width layout */
+.card, 
+.custom-card, 
+.feature-card,
+.tech-card,
+.stat-card {
+    width: 100%;
+    transition: var(--transition);
+}
+
+/* Row and col adjustments for responsiveness */
+.row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Full black dark mode additional fixes */
+body.dark-mode .card,
+body.dark-mode .custom-card,
+body.dark-mode .timeline-step,
+body.dark-mode .stat-card,
+body.dark-mode .tech-card,
+body.dark-mode .upload-section {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .timeline-arrow {
+    background-color: var(--card-bg);
+}
+
+body.dark-mode .timeline::before {
+    background-color: rgba(99, 102, 241, 0.3);
+}
+
+body.dark-mode .hero-title,
+body.dark-mode .hero-subtitle,
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+    color: var(--text-primary);
+}
+
+body.dark-mode .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-mode .hero-section {
+    background: linear-gradient(120deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%);
+}
+
+body.dark-mode .table {
+    color: var(--text-primary);
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+    border-color: var(--border-color);
+}
+
+body.dark-mode .progress-small,
+body.dark-mode .progress-medium,
+body.dark-mode .progress {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .result-section {
+    background-color: rgba(99, 102, 241, 0.07);
+}
+
+/* Timeline specific dark mode fixes */
+body.dark-mode div.timeline-step {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+body.dark-mode div.timeline-step .timeline-content h5 {
+    color: var(--text-primary) !important;
+}
+
+body.dark-mode div.timeline-step .timeline-content p {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-mode div.timeline-arrow {
+    background-color: var(--card-bg) !important;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .upload-container {
+        min-height: 250px;
+        padding: 1.25rem;
+    }
+    
+    .result-container {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .dashboard-metric {
+        padding: 1rem;
+    }
+    
+    .hero-section {
+        padding: 2rem 1rem !important;
+    }
+    
+    .tech-section,
+    .upload-section,
+    .timeline-section,
+    .stats-section {
+        padding: 2rem 1rem !important;
+    }
+}
+
+/* High contrast mode for better accessibility */
+.high-contrast-mode {
+    --primary-color: #0055FF;
+    --primary-dark: #0044CC;
+    --primary-light: rgba(0, 85, 255, 0.15);
+    --primary-lighter: rgba(0, 85, 255, 0.1);
+    --primary-lightest: rgba(0, 85, 255, 0.05);
+    --success-color: #00AA00;
+    --warning-color: #FF8800;
+    --danger-color: #DD0000;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --body-bg: #FFFFFF;
+    --card-bg: #FAFAFA;
+    --border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Print styles */
+@media print {
+    .navbar, .footer, .btn {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    .result-container {
+        padding: 0 !important;
+    }
+    
+    body {
+        background-color: white !important;
+    }
+} 

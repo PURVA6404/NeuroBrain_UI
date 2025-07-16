@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Brain Tumor Detection{% endblock %}
+
+{% block additional_css %}
+<style>
+    .about-hero {
+        background: linear-gradient(120deg, rgba(99, 102, 241, 0.08) 0%, rgba(79, 70, 229, 0.08) 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        width: 100%;
+    }
+    
+    .info-card {
+        padding: 2rem;
+        border-radius: 1rem;
+        background-color: var(--card-bg);
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        height: 100%;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .info-icon {
+        width: 4rem;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        color: white;
+        transition: var(--transition);
+    }
+    
+    .info-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+    
+    .feature-box {
+        display: flex;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
+    }
+    
+    .feature-icon {
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        font-size: 1.5rem;
+        margin-right: 1.25rem;
+        color: white;
+        flex-shrink: 0;
+    }
+    
+    .feature-content {
+        flex-grow: 1;
+    }
+    
+    .feature-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .tumor-card {
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .tumor-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .symptom-tag {
+        display: inline-block;
+        background-color: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .treatment-section {
+        background-color: rgba(99, 102, 241, 0.03);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- About Hero Section -->
+<section class="about-hero">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="mb-4">About NeuroBrain AI</h1>
+                <p class="lead mb-4">NeuroBrain AI is an advanced brain tumor detection system that uses artificial intelligence to assist healthcare professionals in diagnosing brain tumors from MRI scans.</p>
+                <p>Our mission is to improve the accuracy and speed of brain tumor diagnosis, making advanced AI technology accessible to healthcare providers worldwide.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Brain Tumor Information Section -->
+<section class="py-5">
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2>Understanding Brain Tumors</h2>
+                <p class="text-muted">Essential information about brain tumors, their types, and characteristics</p>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <div class="feature-box">
+                    <div class="feature-icon" style="background-color: #6366f1;">
+                        <i class="bi bi-question-circle"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4 class="feature-title">What is a Brain Tumor?</h4>
+                        <p>A brain tumor is an abnormal mass of tissue in which cells grow and multiply uncontrollably. These growths can be benign (non-cancerous) or malignant (cancerous).</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-icon" style="background-color: #8b5cf6;">
+                        <i class="bi bi-diagram-2"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4 class="feature-title">Classification</h4>
+                        <p>Brain tumors are classified into primary (originating in the brain) and secondary (spreading from elsewhere in the body). There are more than 120 different types identified by medical science.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-box">
+                    <div class="feature-icon" style="background-color: #06b6d4;">
+                        <i class="bi bi-bar-chart-steps"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4 class="feature-title">Grading System</h4>
+                        <p>The World Health Organization (WHO) grades brain tumors from I to IV. Grade I tumors are least aggressive, while Grade IV are the most aggressive and fast-growing.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <h4 class="mb-3">WHO Grading Scale</h4>
+                    <div class="tumor-card">
+                        <h5><i class="bi bi-circle-fill text-success me-2" style="font-size: 0.7rem;"></i> Grade I</h5>
+                        <p>Slow-growing cells that look nearly normal and are generally associated with long-term survival. Usually benign and can often be completely removed with surgery.</p>
+                    </div>
+                    
+                    <div class="tumor-card">
+                        <h5><i class="bi bi-circle-fill text-info me-2" style="font-size: 0.7rem;"></i> Grade II</h5>
+                        <p>Relatively slow-growing cells with a slightly abnormal appearance. These tumors can sometimes invade nearby tissues and may recur as higher-grade tumors.</p>
+                    </div>
+                    
+                    <div class="tumor-card">
+                        <h5><i class="bi bi-circle-fill text-warning me-2" style="font-size: 0.7rem;"></i> Grade III</h5>
+                        <p>Actively reproducing abnormal cells that infiltrate adjacent normal brain tissue. These tumors tend to recur, often as a higher grade.</p>
+                    </div>
+                    
+                    <div class="tumor-card">
+                        <h5><i class="bi bi-circle-fill text-danger me-2" style="font-size: 0.7rem;"></i> Grade IV</h5>
+                        <p>Rapidly reproducing abnormal cells that form new blood vessels to maintain growth. These are the most aggressive and life-threatening tumors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <div class="info-card">
+                    <h3 class="mb-4">Common Brain Tumor Types</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="tumor-card">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon me-3" style="background-color: #6366f1; width: 3rem; height: 3rem; font-size: 1.5rem;">
+                                        <i class="bi bi-clipboard-data"></i>
+                                    </div>
+                                    <h4 class="mb-0">Gliomas</h4>
+                                </div>
+                                <p>The most common type of primary brain tumors, originating from glial cells that surround and support nerve cells.</p>
+                                <h5 class="mt-3 mb-2">Subtypes:</h5>
+                                <ul>
+                                    <li><strong>Astrocytomas:</strong> Arising from star-shaped cells called astrocytes, including glioblastoma multiforme (GBM), the most aggressive form.</li>
+                                    <li><strong>Oligodendrogliomas:</strong> Derived from cells that make myelin, the insulation for brain wiring.</li>
+                                    <li><strong>Ependymomas:</strong> Formed from cells lining the ventricles and spinal cord central canal.</li>
+                                </ul>
+                                <p class="mt-2"><strong>Prevalence:</strong> Account for approximately 33% of all brain tumors.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tumor-card">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon me-3" style="background-color: #8b5cf6; width: 3rem; height: 3rem; font-size: 1.5rem;">
+                                        <i class="bi bi-clipboard-pulse"></i>
+                                    </div>
+                                    <h4 class="mb-0">Meningiomas</h4>
+                                </div>
+                                <p>The most common benign intracranial tumors, developing in the meninges, the layers of tissue covering the brain and spinal cord.</p>
+                                <p>Characteristics:</p>
+                                <ul>
+                                    <li>About 85% are non-cancerous, slow-growing tumors</li>
+                                    <li>More common in women than men</li>
+                                    <li>Typically found in adults over 40</li>
+                                    <li>May grow quite large before causing symptoms</li>
+                                </ul>
+                                <p class="mt-2"><strong>Prevalence:</strong> Account for about 30% of all brain tumors.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="tumor-card">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon me-3" style="background-color: #10b981; width: 3rem; height: 3rem; font-size: 1.5rem;">
+                                        <i class="bi bi-capsule"></i>
+                                    </div>
+                                    <h4 class="mb-0">Pituitary Adenomas</h4>
+                                </div>
+                                <p>Benign tumors that grow from the pituitary gland at the base of the brain, often affecting hormone production.</p>
+                                <p>Characteristics:</p>
+                                <ul>
+                                    <li>Can cause hormonal imbalances throughout the body</li>
+                                    <li>May affect vision due to proximity to optic nerves</li>
+                                    <li>Generally treatable with surgery and/or medication</li>
+                                    <li>Rarely become malignant</li>
+                                </ul>
+                                <p class="mt-2"><strong>Prevalence:</strong> Account for about 10% of all brain tumors.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <div class="info-card">
+                    <h3 class="mb-4">Signs and Symptoms</h3>
+                    <p>Brain tumor symptoms vary depending on the tumor's size, type, and location in the brain. Symptoms may develop gradually or appear suddenly.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-brain text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="text-center mb-3">Neurological Symptoms</h5>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <span class="symptom-tag">Seizures</span>
+                                <span class="symptom-tag">Weakness</span>
+                                <span class="symptom-tag">Numbness</span>
+                                <span class="symptom-tag">Balance problems</span>
+                                <span class="symptom-tag">Speech difficulties</span>
+                                <span class="symptom-tag">Memory issues</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-eyeglasses text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="text-center mb-3">Sensory Changes</h5>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <span class="symptom-tag">Vision changes</span>
+                                <span class="symptom-tag">Hearing loss</span>
+                                <span class="symptom-tag">Ringing in ears</span>
+                                <span class="symptom-tag">Loss of smell</span>
+                                <span class="symptom-tag">Taste changes</span>
+                                <span class="symptom-tag">Facial numbness</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-exclamation-triangle text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="text-center mb-3">General Symptoms</h5>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <span class="symptom-tag">Headaches</span>
+                                <span class="symptom-tag">Nausea</span>
+                                <span class="symptom-tag">Vomiting</span>
+                                <span class="symptom-tag">Fatigue</span>
+                                <span class="symptom-tag">Personality changes</span>
+                                <span class="symptom-tag">Confusion</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <strong>Important:</strong> Early detection is crucial for effective treatment. If you experience persistent symptoms, consult a healthcare provider immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="info-card">
+                    <h3 class="mb-4">Treatment Approaches</h3>
+                    <p>Treatment for brain tumors depends on several factors, including the tumor type, grade, location, and the patient's overall health.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon" style="background-color: #6366f1;">
+                                    <i class="bi bi-scalpel"></i>
+                                </div>
+                                <h4 class="mb-0">Surgery</h4>
+                            </div>
+                            <p>The primary treatment for most brain tumors, aiming to remove as much of the tumor as possible without damaging critical brain tissue.</p>
+                            <p><strong>Advanced techniques include:</strong></p>
+                            <ul>
+                                <li>Computer-assisted navigation</li>
+                                <li>Intraoperative MRI</li>
+                                <li>Awake craniotomy</li>
+                                <li>Minimally invasive approaches</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon" style="background-color: #10b981;">
+                                    <i class="bi bi-radioactive"></i>
+                                </div>
+                                <h4 class="mb-0">Radiation Therapy</h4>
+                            </div>
+                            <p>Uses high-energy rays to kill tumor cells or stop them from growing. Often used after surgery or for tumors that cannot be surgically removed.</p>
+                            <p><strong>Types include:</strong></p>
+                            <ul>
+                                <li>External beam radiation</li>
+                                <li>Stereotactic radiosurgery (Gamma Knife, CyberKnife)</li>
+                                <li>Proton therapy</li>
+                                <li>Brachytherapy</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon" style="background-color: #8b5cf6;">
+                                    <i class="bi bi-capsule-pill"></i>
+                                </div>
+                                <h4 class="mb-0">Chemotherapy</h4>
+                            </div>
+                            <p>Uses drugs to kill cancer cells throughout the body. May be given orally, intravenously, or placed directly in the tumor cavity during surgery.</p>
+                            <p><strong>Administration methods:</strong></p>
+                            <ul>
+                                <li>Systemic chemotherapy</li>
+                                <li>Intra-arterial chemotherapy</li>
+                                <li>Wafer implants (Gliadel)</li>
+                                <li>Blood-brain barrier disruption</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon" style="background-color: #f59e0b;">
+                                    <i class="bi bi-lightbulb"></i>
+                                </div>
+                                <h4 class="mb-0">Innovative Approaches</h4>
+                            </div>
+                            <p>Emerging treatments are showing promise in clinical trials and specialized centers.</p>
+                            <p><strong>New therapies include:</strong></p>
+                            <ul>
+                                <li>Targeted therapy (targeting specific gene mutations)</li>
+                                <li>Immunotherapy (helping the immune system fight cancer)</li>
+                                <li>Tumor Treating Fields (TTFields)</li>
+                                <li>Gene therapy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="treatment-section">
+                        <h4 class="mb-3">The Role of AI in Brain Tumor Detection</h4>
+                        <p>Advances in artificial intelligence and machine learning, like our NeuroBrain AI system, are revolutionizing the field of neuro-oncology by:</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>Improving early detection rates</li>
+                                    <li>Enhancing the accuracy of tumor classification</li>
+                                    <li>Providing quantitative assessments of tumor characteristics</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>Assisting radiologists in analyzing complex MRI data</li>
+                                    <li>Monitoring treatment response more precisely</li>
+                                    <li>Potentially improving patient outcomes through faster diagnosis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

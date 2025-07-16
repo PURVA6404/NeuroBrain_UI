@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Brain Tumor Detection{% endblock %}
+
+{% block additional_css %}
+<style>
+    .stats-card {
+        background-color: var(--card-bg);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        height: 100%;
+        transition: var(--transition);
+        box-shadow: var(--card-shadow);
+    }
+    
+    .stats-icon {
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+    
+    .stats-number {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+    }
+    
+    .stats-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: var(--transition);
+    }
+    
+    .glioma-color {
+        color: #6366f1;
+        background-color: rgba(99, 102, 241, 0.1);
+    }
+    
+    .meningioma-color {
+        color: #8b5cf6;
+        background-color: rgba(139, 92, 246, 0.1);
+    }
+    
+    .pituitary-color {
+        color: #ec4899;
+        background-color: rgba(236, 72, 153, 0.1);
+    }
+    
+    .no-tumor-color {
+        color: #10b981;
+        background-color: rgba(16, 185, 129, 0.1);
+    }
+    
+    .total-color {
+        color: #f59e0b;
+        background-color: rgba(245, 158, 11, 0.1);
+    }
+    
+    .dashboard-section {
+        width: 100%;
+        padding: 2rem 0;
+        transition: var(--transition);
+    }
+    
+    .recent-scans-table {
+        transition: var(--transition);
+    }
+    
+    .recent-scans-table th {
+        font-weight: 600;
+        background-color: var(--primary-lightest);
+        color: var(--text-primary);
+    }
+    
+    .recent-scans-table td {
+        vertical-align: middle;
+    }
+    
+    .scan-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+        font-weight: 600;
+    }
+    
+    .confidence-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .confidence-value {
+        text-align: right;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #4f46e5;
+        margin-bottom: 4px;
+    }
+    
+    .progress-small {
+        height: 14px;
+        border-radius: 7px;
+        background-color: rgba(99, 102, 241, 0.1);
+        transition: var(--transition);
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        margin-bottom: 0;
+        width: 100%;
+        position: relative;
+    }
+    
+    .progress-small .progress-bar {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        border-radius: 7px;
+        position: relative;
+        height: 100%;
+        width: 0%;
+        transition: width 1.2s cubic-bezier(.4,1,.7,1) !important;
+        min-width: 0;
+        display: block;
+    }
+    
+    /* Color coding for confidence */
+    .progress-small .progress-bar[data-confidence^="9"],
+    .progress-small .progress-bar[data-confidence="100"] {
+        background: linear-gradient(90deg, #10b981, #059669);
+    }
+    
+    .progress-small .progress-bar[data-confidence^="8"] {
+        background: linear-gradient(90deg, #6366f1, #4f46e5);
+    }
+    
+    .progress-small .progress-bar[data-confidence^="7"] {
+        background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+    }
+    
+    .progress-small .progress-bar[data-confidence^="6"] {
+        background: linear-gradient(90deg, #ec4899, #db2777);
+    }
+    
+    .progress-small .progress-bar[data-confidence^="5"] {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<section class="dashboard-section bg-light">
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="mb-3">Dashboard</h1>
+                <p class="text-muted">Overview of brain tumor detection statistics and recent scans</p>
+            </div>
+        </div>
+        
+        <!-- Cards for statistics -->
+        <div class="row statistics-row">
+            <!-- Hidden data elements for chart data -->
+            <div id="chart-data" 
+                 data-no-tumor="{{ stats.no_tumor }}"
+                 data-glioma="{{ stats.glioma }}"
+                 data-meningioma="{{ stats.meningioma }}"
+                 data-pituitary="{{ stats.pituitary }}"
+                 data-monthly-scans="{{ stats.monthly_scans|join(',') }}"
+                 style="display: none;">
+            </div>
+            
+            <!-- Total Scans -->
+            <div class="col-md-6 col-lg">
+                <div class="stats-card">
+                    <div class="stats-icon total-color">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-number">{{ stats.total_scans }}</div>
+                    <div class="stats-label">Total Scans</div>
+                </div>
+            </div>
+            
+            <!-- Tumor Detected -->
+            <div class="col-md-6 col-lg">
+                <div class="stats-card">
+                    <div class="stats-icon glioma-color">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-number">{{ stats.tumor_detected }}</div>
+                    <div class="stats-label">Tumor Detected</div>
+                </div>
+            </div>
+            
+            <!-- No Tumor -->
+            <div class="col-md-6 col-lg">
+                <div class="stats-card">
+                    <div class="stats-icon no-tumor-color">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-number">{{ stats.no_tumor }}</div>
+                    <div class="stats-label">No Tumor</div>
+                </div>
+            </div>
+            
+            <!-- Glioma -->
+            <div class="col-md-6 col-lg">
+                <div class="stats-card">
+                    <div class="stats-icon glioma-color">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-number">{{ stats.glioma }}</div>
+                    <div class="stats-label">Glioma Tumor</div>
+                </div>
+            </div>
+            
+            <!-- Meningioma -->
+            <div class="col-md-6 col-lg">
+                <div class="stats-card">
+                    <div class="stats-icon meningioma-color">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-number">{{ stats.meningioma }}</div>
+                    <div class="stats-label">Meningioma Tumor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Scans Section -->
+<section class="dashboard-section bg-light">
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div>
+                    <h2>Recent Scans</h2>
+                    <p class="text-muted mb-0">Latest brain MRI scan analyses</p>
+                </div>
+                <a href="{{ url_for('export_csv') }}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                    Export Data
+                </a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-hover recent-scans-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Prediction</th>
+                                    <th scope="col">Confidence</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for scan in recent_scans %}
+                                <tr>
+                                    <td>#{{ scan.id }}</td>
+                                    <td>{{ scan.date }}</td>
+                                    <td>
+                                        {% if scan.prediction == 'No Tumor' %}
+                                            <span class="badge bg-success scan-badge">{{ scan.prediction }}</span>
+                                        {% elif scan.prediction == 'Glioma Tumor' %}
+                                            <span class="badge bg-primary scan-badge">{{ scan.prediction }}</span>
+                                        {% elif scan.prediction == 'Meningioma Tumor' %}
+                                            <span class="badge bg-info scan-badge">{{ scan.prediction }}</span>
+                                        {% else %}
+                                            <span class="badge bg-warning scan-badge">{{ scan.prediction }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="confidence-container">
+                                            <div class="confidence-value">{{ scan.confidence|round(1) }}%</div>
+                                            <div class="progress progress-small">
+                                                <div class="progress-bar"
+                                                     data-confidence="{{ scan.confidence }}"
+                                                     style="width: {{ scan.confidence }}%;"
+                                                     aria-valuenow="{{ scan.confidence }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Process progress bars with confidence data
+        document.querySelectorAll('.progress-bar[data-confidence]').forEach(bar => {
+            const width = bar.getAttribute('data-confidence');
+            // Apply the width immediately
+            bar.style.width = width + '%';
+            console.log('Setting width to ' + width + '%');
+        });
+        
+        // Animate progress bars to correct width
+        document.querySelectorAll('.progress-bar[data-confidence]').forEach((bar, index) => {
+            const confidence = parseFloat(bar.getAttribute('data-confidence'));
+            const confidenceContainer = bar.closest('.confidence-container');
+            const textElement = confidenceContainer.querySelector('.confidence-value');
+            
+            // Animate only if not already at correct width
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 1.2s cubic-bezier(.4,1,.7,1)';
+                bar.style.width = confidence + '%';
+            }, 100 * index);
+            
+            // Animate text counting up
+            let startValue = 0;
+            const duration = 1200;
+            const startTime = Date.now();
+            
+            const updateCounter = () => {
+                const currentTime = Date.now();
+                const elapsedTime = currentTime - startTime;
+                
+                if (elapsedTime < duration) {
+                    const progress = elapsedTime / duration;
+                    const currentValue = Math.round(progress * confidence * 10) / 10;
+                    textElement.textContent = currentValue + '%';
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    textElement.textContent = confidence.toFixed(1) + '%';
+                }
+            };
+            
+            requestAnimationFrame(updateCounter);
+        });
+    });
+</script>
+{% endblock %} 

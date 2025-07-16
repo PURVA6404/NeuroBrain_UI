@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}Detection Results - Brain Tumor Detection{% endblock %}
+
+{% block additional_css %}
+<style>
+    .result-hero {
+        background: linear-gradient(120deg, rgba(99, 102, 241, 0.08) 0%, rgba(79, 70, 229, 0.08) 100%);
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    
+    .detection-card {
+        background-color: var(--card-bg);
+        border-radius: 1rem;
+        box-shadow: var(--card-shadow);
+        padding: 2rem;
+        transition: var(--transition);
+        height: 100%;
+    }
+    
+    .result-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+    }
+    
+    .result-badge {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+    
+    .confidence-meter {
+        margin: 2rem 0;
+        transition: var(--transition);
+    }
+    
+    .meter-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+    
+    .meter-label span {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #6366f1;
+        transition: var(--transition);
+    }
+    
+    .progress-medium {
+        height: 1rem;
+        border-radius: 1rem;
+        background-color: rgba(99, 102, 241, 0.1);
+        overflow: hidden;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .progress-medium .progress-bar {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        border-radius: 1rem;
+        position: relative;
+        height: 100%;
+        width: 0%;
+        transition: width 1.2s cubic-bezier(.4,1,.7,1);
+        min-width: 0;
+        display: block;
+    }
+    
+    .progress-medium .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%
+        );
+        background-size: 1rem 1rem;
+        z-index: 1;
+        animation: progress-bar-stripes 1s linear infinite;
+    }
+    
+    @keyframes progress-bar-stripes {
+        0% {
+            background-position: 1rem 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+    
+    .next-steps {
+        background-color: var(--primary-lightest);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        transition: var(--transition);
+    }
+    
+    .next-steps h5 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+    
+    .next-steps ul {
+        margin-bottom: 0;
+        padding-left: 1.5rem;
+    }
+    
+    .next-steps li {
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+    }
+    
+    .additional-info {
+        margin-top: 2rem;
+        transition: var(--transition);
+    }
+    
+    .detail-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .detail-list li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--light-border);
+        display: flex;
+        justify-content: space-between;
+        transition: var(--transition);
+    }
+    
+    .detail-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: var(--transition);
+    }
+    
+    .detail-value {
+        font-weight: 600;
+        color: var(--text-primary);
+        transition: var(--transition);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Result Hero Section -->
+<section class="result-hero">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="mb-4">Analysis Results</h1>
+                <p class="lead">MRI scan analysis has been completed successfully</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Result Details Section -->
+<section class="py-5">
+    <div class="container-fluid">
+        <div class="row g-4">
+            <!-- MRI Image -->
+            <div class="col-lg-6">
+                <div class="detection-card mb-4">
+                    <h4 class="mb-4">Uploaded MRI Scan</h4>
+                    <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="MRI Scan" class="result-image">
+                    <div class="additional-info">
+                        <h5 class="mb-3">Scan Details</h5>
+                        <ul class="detail-list">
+                            <li>
+                                <span class="detail-label">File Name</span>
+                                <span class="detail-value">{{ filename }}</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">Process Date</span>
+                                <span class="detail-value">{{ now }}</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">Image Size</span>
+                                <span class="detail-value">150 × 150 px</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detection Results -->
+            <div class="col-lg-6">
+                <div class="detection-card">
+                    <h4 class="mb-4">Detection Results</h4>
+                    
+                    {% if prediction == 'No Tumor' %}
+                        <div class="result-badge bg-success text-white">{{ prediction }}</div>
+                        <p class="mb-4">No brain tumor was detected in the MRI scan. The scan appears to show normal brain tissue without significant abnormalities.</p>
+                    {% elif prediction == 'Glioma Tumor' %}
+                        <div class="result-badge bg-primary text-white">{{ prediction }}</div>
+                        <p class="mb-4">A glioma tumor has been detected in the MRI scan. Gliomas are tumors that occur in the brain and spinal cord and form from glial cells.</p>
+                    {% elif prediction == 'Meningioma Tumor' %}
+                        <div class="result-badge bg-info text-white">{{ prediction }}</div>
+                        <p class="mb-4">A meningioma tumor has been detected in the MRI scan. Meningiomas are tumors that arise from the meninges — the membranes that surround the brain and spinal cord.</p>
+                    {% else %}
+                        <div class="result-badge bg-warning text-white">{{ prediction }}</div>
+                        <p class="mb-4">A pituitary tumor has been detected in the MRI scan. Pituitary tumors are abnormal growths that develop in the pituitary gland, which is located at the base of the brain.</p>
+                    {% endif %}
+                    
+                    <div class="confidence-meter">
+                        <div class="meter-label">
+                            <div>Confidence Level</div>
+                            <div><span>{{ confidence|round(1) }}%</span></div>
+                        </div>
+                        <div class="progress progress-medium">
+                            <div class="progress-bar" role="progressbar" data-confidence="{{ confidence }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ confidence }}%;"></div>
+                        </div>
+                    </div>
+                    
+                    {% if prediction != 'No Tumor' %}
+                    <div class="next-steps">
+                        <h5>Recommended Next Steps</h5>
+                        <ul>
+                            <li>Consult with a neurologist or neurosurgeon for a thorough evaluation.</li>
+                            <li>Additional imaging studies (e.g., contrast-enhanced MRI) may be needed for further assessment.</li>
+                            <li>Consider a biopsy for definitive diagnosis if clinically indicated.</li>
+                            <li>Develop a treatment plan based on tumor type, size, location, and patient factors.</li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="next-steps">
+                        <h5>Recommendations</h5>
+                        <ul>
+                            <li>Continue with regular health check-ups as advised by your healthcare provider.</li>
+                            <li>If symptoms persist despite this negative finding, follow up with your healthcare provider.</li>
+                            <li>Maintain a healthy lifestyle to support overall brain health.</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            New Scan
+                        </a>
+                        <a href="{{ url_for('download_report', filename=filename) }}" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                            Download Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <div class="alert alert-info" role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill me-2" viewBox="0 0 16 16">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                    </svg>
+                    <strong>Disclaimer:</strong> This is an AI-assisted detection and should not replace professional medical diagnosis. Always consult with a healthcare provider for clinical decisions.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var bar = document.querySelector('.progress-bar[data-confidence]');
+    if (bar) {
+        var confidence = parseFloat(bar.getAttribute('data-confidence'));
+        bar.style.width = '0%';
+        bar.setAttribute('aria-valuenow', 0);
+        setTimeout(function() {
+            bar.style.width = confidence + '%';
+            bar.setAttribute('aria-valuenow', confidence);
+        }, 100);
+    }
+    // Animate the confidence text above the bar
+    var textSpan = document.querySelector('.meter-label span');
+    if (textSpan && bar) {
+        var duration = 1200;
+        var startTime = Date.now();
+        var animateText = function() {
+            var elapsed = Date.now() - startTime;
+            if (elapsed < duration) {
+                var progress = elapsed / duration;
+                var value = Math.round(progress * confidence * 10) / 10;
+                textSpan.textContent = value + '%';
+                requestAnimationFrame(animateText);
+            } else {
+                textSpan.textContent = confidence.toFixed(1) + '%';
+            }
+        };
+        requestAnimationFrame(animateText);
+    }
+});
+</script>
+{% endblock %} 
